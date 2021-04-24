@@ -1,7 +1,8 @@
 {
   "variables": {
     "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
-    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}"
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "chain_id": "{{env `CHAIN_ID`}}"
   },
   "sensitive-variables": ["aws_access_key", "aws_secret_key"],
   "builders": [
@@ -23,7 +24,7 @@
       },
       "instance_type": "t2.micro",
       "ssh_username": "ubuntu",
-      "ami_name": "pbc-test-{{timestamp}}"
+      "ami_name": "{{user `chain_id`}}-sentinel-{{timestamp}}"
     }
   ],
   "provisioners": [
@@ -40,7 +41,12 @@
     },
     {
       "type": "shell",
-      "script": "pbc_provisioner.sh"
+      "script": "install.sh"
+    },
+    {
+      "type": "shell",
+      "environment_vars": "CHAIN_ID={{user `chain_id`}}",
+      "script": "sentinel_config.sh"
     }
   ]
 }
