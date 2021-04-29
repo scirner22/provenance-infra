@@ -9,7 +9,7 @@ PBC_VERSION=v0.2.0
 DAEMON_HOME=/home/ubuntu/cosmovisor
 PIO_CONFIG_HOME=/home/ubuntu/config
 PIO_DATA_HOME=/home/ubuntu/data
-PBC_VERSIONED_PATH=${DAEMON_HOME}/upgrades/${PBC_VERSION}
+PBC_GENESIS_PATH=${DAEMON_HOME}/genesis
 
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install -y build-essential libsnappy-dev
@@ -30,21 +30,24 @@ tar xvf /tmp/v1.20.tar.gz -C /tmp
 cd /tmp/leveldb-1.20
 make && sudo scp -r out-static/lib* out-shared/lib* "/usr/local/lib"
 cd include && sudo scp -r leveldb /usr/local/include
+cd /usr/local/lib
+sudo ln -s libleveldb.so.1.20 libleveldb.so.1d
 sudo ldconfig
 cd /home/ubuntu
 
 # TODO https://github.com/provenance-io/cosmovisor
-echo "Fetching and installing cosmovisor..."
-$GO_BIN/go get github.com/cosmos/cosmos-sdk/cosmovisor/cmd/cosmovisor
+echo "Fetching and installing provenance cosmovisor..."
+$GO_BIN/go get github.com/provenance-io/cosmovisor/cmd/cosmovisor
 
-mkdir -p ${PBC_VERSIONED_PATH}
+mkdir -p ${PBC_GENESIS_PATH}
+mkdir -p ${DAEMON_HOME}/upgrades
 mkdir -p ${PIO_CONFIG_HOME}
 mkdir -p ${PIO_DATA_HOME}
 
 echo "Downloading and installing provenance..."
 wget "https://github.com/provenance-io/provenance/releases/download/$PBC_VERSION/provenance-linux-amd64-$PBC_VERSION.zip" -P /tmp
-sudo unzip "/tmp/provenance-linux-amd64-$PBC_VERSION.zip" -d ${PBC_VERSIONED_PATH}
-sudo ln -s ${PBC_VERSIONED_PATH} ${DAEMON_HOME}/current
+sudo unzip "/tmp/provenance-linux-amd64-$PBC_VERSION.zip" -d ${PBC_GENESIS_PATH}
+sudo ln -s ${PBC_GENESIS_PATH} ${DAEMON_HOME}/current
 sudo chown -R ubuntu:ubuntu $DAEMON_HOME
 
 echo "Installation completed!"
