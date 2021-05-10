@@ -1,0 +1,29 @@
+# Tendermint KMS configuration file
+
+## Chain Configuration
+
+### Cosmos Hub Network
+
+[[chain]]
+id = "CHAIN_ID"
+key_format = { type = "bech32", account_key_prefix = "PREFIX", consensus_key_prefix = "PREFIXvalconspub" }
+state_file = "/home/ubuntu/state/CHAIN_ID-consensus.json"
+
+## Signing Provider Configuration
+
+### Software-based Signer Configuration
+
+[[providers.softsign]]
+chain_ids = ["CHAIN_ID"]
+key_type = "consensus"
+path = "/home/ubuntu/secrets/CHAIN_ID-consensus.key"
+
+## Validator Configuration
+
+[[validator]]
+chain_id = "CHAIN_ID"
+addr = "tcp://ADDR"
+secret_key = "/home/ubuntu/secrets/kms-identity.key"
+protocol_version = "v0.34"
+# TODO what to set this to?
+reconnect = false
