@@ -5,7 +5,7 @@ GO_VERSION=go1.15.6.linux-amd64
 GOPATH=/usr/local/go
 GO_BIN=${GOPATH}/bin
 
-PBC_VERSION=v0.2.0
+PBC_VERSION=$GENESIS_VERSION
 DAEMON_HOME=/home/ubuntu/cosmovisor
 PIO_CONFIG_HOME=/home/ubuntu/config
 PIO_DATA_HOME=/home/ubuntu/data

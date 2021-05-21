@@ -2,7 +2,9 @@
   "variables": {
     "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
     "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
-    "chain_id": "{{env `CHAIN_ID`}}"
+    "chain_id": "{{env `CHAIN_ID`}}",
+    "genesis_version": "{{env `GENESIS_VERSION`}}",
+    "network": "{{env `NETWORK`}}"
   },
   "sensitive-variables": ["aws_access_key", "aws_secret_key"],
   "builders": [
@@ -41,11 +43,17 @@
     },
     {
       "type": "shell",
+      "environment_vars": [
+          "GENESIS_VERSION={{user `genesis_version`}}"
+      ],
       "script": "install.sh"
     },
     {
       "type": "shell",
-      "environment_vars": "CHAIN_ID={{user `chain_id`}}",
+      "environment_vars": [
+          "CHAIN_ID={{user `chain_id`}}",
+          "NETWORK={{user `network`}}"
+      ],
       "script": "sentinel_config.sh"
     }
   ]
