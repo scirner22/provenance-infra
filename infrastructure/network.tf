@@ -15,6 +15,7 @@ resource "aws_internet_gateway" "main" {
 	}
 }
 
+
 resource "aws_subnet" "internal_private" {
 	vpc_id = aws_vpc.main.id
 	availability_zone = "us-east-1a"
@@ -23,6 +24,21 @@ resource "aws_subnet" "internal_private" {
 	tags = {
 		Name = "internal_private"
 	}
+}
+
+resource "aws_eip" "nat_a" {
+	vpc = true
+
+	lifecycle {
+		prevent_destroy = true
+	}
+}
+
+resource "aws_nat_gateway" "main_a_nat" {
+  allocation_id = aws_eip.nat_a.id
+  subnet_id     = aws_subnet.main_a_public.id
+
+  depends_on = [aws_internet_gateway.main]
 }
 
 resource "aws_subnet" "main_a_private" {
@@ -126,16 +142,15 @@ resource "aws_route_table" "private_route_table" {
 
 	route {
 		cidr_block = "0.0.0.0/0"
-		gateway_id = aws_internet_gateway.main.id
-	}
-
-	route {
-		ipv6_cidr_block = "::/0"
-		gateway_id = aws_internet_gateway.main.id
+		gateway_id = aws_nat_gateway.main_a_nat.id
 	}
 
 	tags = {
 		Name = "private_route_table"
+	}
+
+	lifecycle {
+		ignore_changes = [route]
 	}
 }
 

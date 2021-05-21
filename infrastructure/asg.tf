@@ -44,6 +44,8 @@ resource "aws_instance" "public_sentinel_1" {
 
   key_name = aws_key_pair.ssh.id
 
+  # TODO add user_data/public_sentinel.sh to all public sentinels
+
   subnet_id = aws_subnet.main_a_public.id
   vpc_security_group_ids = [
     aws_security_group.allow_personal_ssh.id,
@@ -124,6 +126,7 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids = [
     aws_security_group.allow_personal_ssh.id,
     aws_security_group.allow_internal_ssh.id,
+    aws_security_group.allow_internal_cosmos.id,
     aws_security_group.allow_outbound_internet_access.id,
   ]
 
@@ -160,7 +163,7 @@ resource "aws_instance" "private_sentinel_1" {
 
   ebs_optimized = true
   root_block_device {
-    delete_on_termination = true
+    delete_on_termination = false
 
     volume_type = "gp2"
     volume_size = 1000
@@ -179,6 +182,100 @@ resource "aws_instance" "private_sentinel_1" {
 
   tags = {
     Name = "private_sentinel_1"
+    Environment = "mainnet"
+  }
+}
+
+resource "aws_instance" "private_sentinel_2" {
+  ami = "ami-04893c9535825d595"
+  instance_type = "m5.xlarge"
+
+  ebs_optimized = true
+  root_block_device {
+    delete_on_termination = false
+
+    volume_type = "gp2"
+    volume_size = 1000
+  }
+
+  key_name = aws_key_pair.ssh.id
+
+  subnet_id = aws_subnet.main_b_private.id
+  vpc_security_group_ids = [
+    aws_security_group.allow_internal_ssh.id,
+    aws_security_group.allow_internal_cosmos.id,
+    aws_security_group.allow_outbound_internet_access.id,
+  ]
+
+  user_data = file("user_data/private_sentinel.sh")
+
+  tags = {
+    Name = "private_sentinel_2"
+    Environment = "mainnet"
+  }
+}
+
+resource "aws_instance" "validator" {
+  ami = "ami-04893c9535825d595"
+  instance_type = "m5.xlarge"
+
+  ebs_optimized = true
+  root_block_device {
+    delete_on_termination = false
+
+    volume_type = "gp2"
+    volume_size = 1000
+  }
+
+  key_name = aws_key_pair.ssh.id
+
+  subnet_id = aws_subnet.main_b_private.id
+  vpc_security_group_ids = [
+    aws_security_group.allow_internal_ssh.id,
+    aws_security_group.allow_internal_cosmos.id,
+    aws_security_group.allow_tmkms.id,
+    aws_security_group.allow_outbound_internet_access.id,
+  ]
+
+  user_data = file("user_data/validator.sh")
+
+  tags = {
+    Name = "validator"
+    Environment = "mainnet"
+  }
+}
+
+resource "aws_instance" "tmkms" {
+  ami = "ami-0239bbcde3050dad5"
+  instance_type = "m5.xlarge"
+  iam_instance_profile = aws_iam_instance_profile.tmkms.name
+
+  ebs_optimized = true
+  root_block_device {
+    delete_on_termination = false
+
+    volume_type = "gp2"
+    volume_size = 40
+  }
+
+  key_name = aws_key_pair.ssh.id
+
+  user_data = file("user_data/tmkms.sh")
+
+  subnet_id = aws_subnet.main_a_private.id
+  # TODO put back in internal_private and remove outbound access
+  vpc_security_group_ids = [
+    aws_security_group.allow_internal_ssh.id,
+    aws_security_group.allow_outbound_internet_access.id,
+    aws_security_group.allow_tmkms.id,
+  ]
+
+  enclave_options {
+    enabled = true
+  }
+
+  tags = {
+    Name = "tmkms"
     Environment = "mainnet"
   }
 }

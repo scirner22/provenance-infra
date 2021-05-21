@@ -51,6 +51,13 @@ resource "aws_security_group" "allow_tmkms" {
     self = true
   }
 
+  egress {
+    from_port = 26669
+    to_port = 26669
+    protocol = "tcp"
+    self = true
+  }
+
   tags = {
     Name = "allow_tmkms"
   }
@@ -63,14 +70,14 @@ resource "aws_security_group" "allow_internal_cosmos" {
 
   ingress {
     from_port = 26656
-    to_port = 26656
+    to_port = 26657
     protocol = "tcp"
     self = true
   }
 
   egress {
     from_port = 26656
-    to_port = 26656
+    to_port = 26657
     protocol = "tcp"
     self = true
   }
@@ -102,6 +109,13 @@ resource "aws_security_group" "allow_external_cosmos" {
   ingress {
     from_port = 9090
     to_port = 9090
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port = 26656
+    to_port = 26657
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
