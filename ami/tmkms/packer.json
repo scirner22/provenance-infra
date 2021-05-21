@@ -1,0 +1,70 @@
+{
+  "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "chain_id": "{{env `CHAIN_ID`}}",
+    "prefix": "{{env `PREFIX`}}",
+    "region": "{{env `AWS_REGION`}}",
+    "kms_key_id": "{{env `KMS_KEY_ID`}}"
+  },
+  "sensitive-variables": ["aws_access_key", "aws_secret_key"],
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "us-east-1",
+      "vpc_id": "vpc-0f25bef94d4f89f72",
+      "subnet_id": "subnet-03f7771254462d460",
+      "source_ami": "ami-0d5eff06f840b45e9",
+      "iam_instance_profile": "tmkms_instance_profile",
+      "instance_type": "t2.micro",
+      "ssh_username": "ec2-user",
+      "ami_name": "{{user `chain_id`}}-tmkms-{{timestamp}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "tmkms.toml",
+      "destination": "/tmp/tmkms.toml"
+    },
+    {
+      "type": "file",
+      "source": "configure.sh",
+      "destination": "/tmp/configure.sh"
+    },
+    {
+      "type": "file",
+      "source": "run.sh",
+      "destination": "/tmp/run.sh"
+    },
+    {
+      "type": "file",
+      "source": "tmkms.service",
+      "destination": "/tmp/tmkms.service"
+    },
+    {
+      "type": "file",
+      "source": "validator_vsock_proxy.yaml",
+      "destination": "/tmp/validator_vsock_proxy.yaml"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+          "CHAIN_ID={{user `chain_id`}}",
+          "PREFIX={{user `prefix`}}",
+          "AWS_REGION={{user `region`}}",
+          "KMS_KEY_ID={{user `kms_key_id`}}",
+          "TIMESTAMP={{timestamp}}"
+      ],
+      "script": "install.sh"
+    }
+  ]
+}

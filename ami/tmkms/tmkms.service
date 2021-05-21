@@ -1,0 +1,25 @@
+[Unit]
+Description=Tendermint KMS
+ConditionPathExists=/home/ec2-user/tmkms.eif
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+Group=ec2-user
+LimitNOFILE=1024
+
+Restart=on-failure
+RestartSec=10
+
+WorkingDirectory=/home/ec2-user
+
+# make sure log directory exists
+PermissionsStartOnly=true
+
+ExecStartPre=/bin/mkdir -p /home/ec2-user/sockets /home/ec2-user/state
+ExecStartPre=/bin/chown ec2-user:ec2-user /home/ec2-user/sockets /home/ec2-user/state
+ExecStart=/home/ec2-user/run.sh
+
+[Install]
+WantedBy=multi-user.target

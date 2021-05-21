@@ -1,0 +1,2 @@
+allowlist:
+        - {address: VALIDATOR_ADDR, port: 26669}

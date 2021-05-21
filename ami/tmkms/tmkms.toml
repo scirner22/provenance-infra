@@ -1,0 +1,14 @@
+# address = 'unix:///home/ec2-user/sockets/validator.socket'
+address = 'tcp://ip-10-0-1-8.ec2.internal:26669' # this is just a placeholder and is skipped since it is tcp protocol
+chain_id = 'CHAIN_ID'
+sealed_consensus_key_path = '/home/ec2-user/secrets/secret.key'
+sealed_id_key_path = '/home/ec2-user/secrets/id.key'
+state_file_path = '/home/ec2-user/state/priv_validator_state.json'
+enclave_config_cid = 15 #overridden by flag
+enclave_config_port = 5050
+enclave_state_port = 5555
+enclave_tendermint_conn = 5000
+enclave_log_port = 6050
+enclave_log_file = 'log.temp' # not actually written to since console = true, but this is needed for compilation
+enclave_log_to_console = true
+aws_region = 'AWS_REGION'
