@@ -125,6 +125,23 @@ resource "aws_security_group" "allow_external_cosmos" {
   }
 }
 
+resource "aws_security_group" "allow_strict_external_cosmos" {
+  name = "allow_strict_external_cosmos"
+  description = "Allow internal nodes access to external cosmos nodes"
+  vpc_id = aws_vpc.main.id
+
+  egress {
+    from_port = 26656
+    to_port = 26657
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_strict_external_cosmos"
+  }
+}
+
 resource "aws_security_group" "allow_outbound_internet_access" {
   name = "allow_outbound_internet_access"
   description = "Allow all outbound to the internet"
