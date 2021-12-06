@@ -53,54 +53,59 @@ resource "aws_iam_role_policy_attachment" "tmkms_enclave_kms_debug" {
   policy_arn = aws_iam_policy.tmkms_enclave_kms_decrypt_debug.arn
 }
 
-# resource "aws_iam_policy" "tmkms_enclave_kms_decrypt" {
-#   name        = "tmkms_enclave_kms_decrypt"
-#   path        = "/"
-#   description = "Policy to decrypt the tmkms data key for KMS"
-# 
-#   policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Action = [
-#           "kms:Decrypt",
-#         ]
-#         Effect = "Allow"
-#         Resource = aws_kms_key.tmkms.arn
-#         Condition = {
-#           StringEqualsIgnoreCase = {
-#             "kms:RecipientAttestation:PCR4": "b1ea222d7b45ca0d0b3bfca9216543e1545dca77e0b6414bf98364da8e38142cca8b09e4f19112cd8630214b9f804037",
-#             "kms:RecipientAttestation:PCR0": "6b4372210f285bd09bd1e945518a9a3f995bedb15582faa4c895bd9ae3bda78a1acd86a51ce7ddb081ea9efe00de4c2a"
-#           }
-#         }
-#       }
-#     ]
-#   })
-# }
+resource "aws_iam_policy" "tmkms_enclave_kms_decrypt" {
+  name        = "tmkms_enclave_kms_decrypt"
+  path        = "/"
+  description = "Policy to decrypt the tmkms data key for KMS"
 
-# resource "aws_iam_role_policy_attachment" "tmkms_enclave_kms" {
-#   role       = aws_iam_role.tmkms.name
-#   policy_arn = aws_iam_policy.tmkms_enclave_kms_decrypt.arn
-# }
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "kms:Decrypt",
+        ]
+        Effect   = "Allow"
+        Resource = aws_kms_key.tmkms.arn
+        Condition = {
+          StringEqualsIgnoreCase = {
+            "kms:RecipientAttestation:PCR4" : "45bffc6378b2480cb29b9feca8a5eaa20a75f30bd0aecd91a5ec541f470b9c4067abd298931b66acb1cc848f582aeec1",
+            "kms:RecipientAttestation:PCR0" : "9c865ee27e269852f20fbe775a31bb2de65dddd45dbd24c80bd683f8a301aa5ae1bd884b8303833eb19c75b6877d8a60"
+          }
+        }
+      }
+    ]
+  })
+}
 
-# resource "aws_iam_policy" "tmkms_kms_encrypt" {
-#   name        = "tmkms_kms_encrypt"
-#   path        = "/"
-#   description = "Policy to encrypt tmkms data for KMS"
-# 
-#   policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Action = [
-#           "kms:Encrypt",
-#         ]
-#         Effect   = "Allow"
-#         Resource = aws_kms_key.tmkms.arn
-#       },
-#     ]
-#   })
-# }
+resource "aws_iam_role_policy_attachment" "tmkms_enclave_kms" {
+  role       = aws_iam_role.tmkms.name
+  policy_arn = aws_iam_policy.tmkms_enclave_kms_decrypt.arn
+}
+
+resource "aws_iam_policy" "tmkms_kms_encrypt" {
+  name        = "tmkms_kms_encrypt"
+  path        = "/"
+  description = "Policy to encrypt tmkms data for KMS"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "kms:Encrypt",
+        ]
+        Effect   = "Allow"
+        Resource = aws_kms_key.tmkms.arn
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "tmkms_kms_encrypt" {
+  role       = aws_iam_role.tmkms.name
+  policy_arn = aws_iam_policy.tmkms_kms_encrypt.arn
+}
 
 resource "aws_iam_policy" "read_write_tmkms_bucket" {
   name        = "read_write_tmkms_bucket"
