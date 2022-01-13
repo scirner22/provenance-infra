@@ -92,7 +92,7 @@ resource "aws_instance" "bastion" {
   ami           = "ami-011899242bb902164"
   instance_type = "t2.micro"
 
-  key_name = aws_key_pair.ssh.id
+  key_name = terraform.workspace
 
   subnet_id = aws_subnet.main_c_public.id
   vpc_security_group_ids = [
@@ -193,7 +193,7 @@ resource "aws_instance" "validator" {
     volume_size = 100
   }
 
-  key_name = aws_key_pair.ssh.id
+  key_name = terraform.workspace
 
   subnet_id = aws_subnet.main_b_public.id
   vpc_security_group_ids = [
@@ -223,7 +223,7 @@ resource "aws_instance" "tmkms" {
     volume_size = 40
   }
 
-  key_name = aws_key_pair.ssh.id
+  key_name = terraform.workspace
 
   subnet_id = aws_subnet.main_a_private.id
   # TODO put back in internal_private and remove outbound access
