@@ -89,10 +89,10 @@
 # }
 
 resource "aws_instance" "bastion" {
-  ami = "ami-011899242bb902164"
+  ami           = "ami-011899242bb902164"
   instance_type = "t2.micro"
 
-  key_name = aws_key_pair.ssh.id
+  key_name = terraform.workspace
 
   subnet_id = aws_subnet.main_c_public.id
   vpc_security_group_ids = [
@@ -103,7 +103,7 @@ resource "aws_instance" "bastion" {
   ]
 
   tags = {
-    Name = "bastion"
+    Name        = "bastion"
     Environment = "mainnet"
   }
 }
@@ -182,20 +182,20 @@ resource "aws_eip_association" "eip_assoc_bastion" {
 # }
 
 resource "aws_instance" "validator" {
-  ami = "ami-04893c9535825d595"
-  instance_type = "m5.xlarge"
+  ami           = "ami-011899242bb902164"
+  instance_type = "m5.2xlarge"
 
   ebs_optimized = true
   root_block_device {
     delete_on_termination = false
 
-    volume_type = "gp2"
-    volume_size = 1000
+    volume_type = "gp3"
+    volume_size = 100
   }
 
   key_name = aws_key_pair.ssh.id
 
-  subnet_id = aws_subnet.main_b_private.id
+  subnet_id = aws_subnet.main_b_public.id
   vpc_security_group_ids = [
     aws_security_group.allow_internal_ssh.id,
     aws_security_group.allow_internal_cosmos.id,
@@ -204,30 +204,26 @@ resource "aws_instance" "validator" {
     aws_security_group.allow_outbound_internet_access.id,
   ]
 
-  user_data = file("user_data/validator.sh")
-
   tags = {
-    Name = "validator"
-    Environment = "mainnet"
+    Name        = "validator"
+    Environment = "testnet"
   }
 }
 
 resource "aws_instance" "tmkms" {
-  ami = "ami-0239bbcde3050dad5"
-  instance_type = "m5.xlarge"
+  ami                  = "ami-0d5eff06f840b45e9"
+  instance_type        = "m5.xlarge"
   iam_instance_profile = aws_iam_instance_profile.tmkms.name
 
   ebs_optimized = true
   root_block_device {
     delete_on_termination = false
 
-    volume_type = "gp2"
+    volume_type = "gp3"
     volume_size = 40
   }
 
   key_name = aws_key_pair.ssh.id
-
-  user_data = file("user_data/tmkms.sh")
 
   subnet_id = aws_subnet.main_a_private.id
   # TODO put back in internal_private and remove outbound access
@@ -242,7 +238,7 @@ resource "aws_instance" "tmkms" {
   }
 
   tags = {
-    Name = "tmkms"
-    Environment = "mainnet"
+    Name        = "tmkms"
+    Environment = "testnet"
   }
 }
