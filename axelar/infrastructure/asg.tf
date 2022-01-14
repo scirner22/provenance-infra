@@ -113,3 +113,37 @@ resource "aws_instance" "ethereum_node" {
     Environment = "testnet"
   }
 }
+
+resource "aws_instance" "chain_node_1" {
+  ami           = "ami-011899242bb902164"
+  instance_type = "m5.xlarge"
+
+  ebs_optimized = true
+  root_block_device {
+    delete_on_termination = false
+
+    volume_type = "gp3"
+    volume_size = 20
+  }
+
+  ebs_block_device {
+    delete_on_termination = true
+
+    device_name = ""
+    volume_type = "gp3"
+    volume_size = 1000
+  }
+
+  key_name = aws_key_pair.ssh.id
+
+  subnet_id = aws_subnet.main_b_public.id
+  vpc_security_group_ids = [
+    aws_security_group.allow_internal_ssh.id,
+    aws_security_group.allow_outbound_internet_access.id,
+  ]
+
+  tags = {
+    Name        = "chain-node-1"
+    Environment = "mainnet"
+  }
+}
