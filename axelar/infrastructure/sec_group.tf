@@ -170,3 +170,65 @@ resource "aws_security_group" "allow_outbound_internet_access" {
     Name = "allow_outbound_internet_access"
   }
 }
+
+resource "aws_security_group" "allow_internal_ethereum" {
+  name        = "allow_internal_ethereum"
+  description = "Allow all ethereum ports on self"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port = 8545
+    to_port   = 8546
+    protocol  = "tcp"
+    security_groups  = [aws_security_group.allow_internal_cosmos.id]
+  }
+
+  ingress {
+    from_port = 30301
+    to_port   = 30303
+    protocol  = "tcp"
+    security_groups  = [aws_security_group.allow_internal_cosmos.id]
+  }
+
+  ingress {
+    from_port = 30301
+    to_port   = 30303
+    protocol  = "udp"
+    security_groups  = [aws_security_group.allow_internal_cosmos.id]
+  }
+
+  tags = {
+    Name = "allow_internal_ethereum"
+  }
+}
+
+resource "aws_security_group" "allow_strict_external_ethereum" {
+  name        = "allow_external_ethereum"
+  description = "Allow all Ethereum ports to everyone"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port   = 8545
+    to_port     = 8546
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 30301
+    to_port     = 30303
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 30301
+    to_port     = 30303
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_strict_external_ethereum"
+  }
+}
