@@ -207,21 +207,21 @@ resource "aws_security_group" "allow_strict_external_ethereum" {
   description = "Allow all Ethereum ports to everyone"
   vpc_id      = aws_vpc.main.id
 
-  ingress {
+  egress {
     from_port   = 8545
     to_port     = 8546
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
+  egress {
     from_port   = 30301
     to_port     = 30303
     protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
+  egress {
     from_port   = 30301
     to_port     = 30303
     protocol    = "tcp"
