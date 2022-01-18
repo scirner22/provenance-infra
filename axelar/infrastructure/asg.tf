@@ -129,7 +129,7 @@ resource "aws_instance" "chain_node_1" {
   ebs_block_device {
     delete_on_termination = true
 
-    device_name = ""
+    device_name = "/dev/sdb"
     volume_type = "gp3"
     volume_size = 1000
   }
