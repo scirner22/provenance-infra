@@ -32,7 +32,7 @@ resource "aws_instance" "validator" {
     delete_on_termination = false
 
     volume_type = "gp3"
-    volume_size = 100
+    volume_size = 500
   }
 
   key_name = aws_key_pair.ssh.id
@@ -44,7 +44,6 @@ resource "aws_instance" "validator" {
     aws_security_group.allow_strict_external_cosmos.id,
     aws_security_group.allow_tmkms.id,
     aws_security_group.allow_outbound_internet_access.id,
-    aws_security_group.allow_strict_external_ethereum.id,
   ]
 
   tags = {
