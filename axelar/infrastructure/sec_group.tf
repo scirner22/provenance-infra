@@ -161,6 +161,15 @@ resource "aws_security_group" "allow_strict_external_cosmos" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  egress {
+    from_port        = 9650
+    to_port          = 9651
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+
   tags = {
     Name = "allow_strict_external_cosmos"
   }
@@ -183,6 +192,14 @@ resource "aws_security_group" "allow_outbound_internet_access" {
     from_port        = 443
     to_port          = 443
     protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port        = 53
+    to_port          = 53
+    protocol         = "udp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
@@ -251,5 +268,39 @@ resource "aws_security_group" "allow_strict_external_ethereum" {
 
   tags = {
     Name = "allow_strict_external_ethereum"
+  }
+}
+
+resource "aws_security_group" "allow_internal_avalanche" {
+  name        = "allow_internal_avalanche"
+  description = "Allow all avalanche ports on self"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port = 9650
+    to_port   = 9651
+    protocol  = "tcp"
+    security_groups  = [aws_security_group.allow_strict_external_cosmos.id]
+  }
+
+  tags = {
+    Name = "allow_internal_avalanche"
+  }
+}
+
+resource "aws_security_group" "allow_strict_external_avalanche" {
+  name        = "allow_external_avalanche"
+  description = "Allow all Avalanche ports to everyone"
+  vpc_id      = aws_vpc.main.id
+
+  egress {
+    from_port   = 9650
+    to_port     = 9651
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_strict_external_avalanche"
   }
 }

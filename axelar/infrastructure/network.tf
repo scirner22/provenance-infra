@@ -201,28 +201,18 @@ resource "aws_route_table_association" "main_c_private_route_table" {
 #   }
 # }
 
-resource "aws_network_interface" "interface_c_public" {
-  subnet_id   = aws_subnet.main_c_public.id
-  private_ips = ["10.0.12.10"]
-}
+# resource "aws_network_interface" "interface_c_public" {
+#   subnet_id   = aws_subnet.main_c_public.id
+#   private_ips = ["10.0.12.10"]
+# }
 
-resource "aws_eip" "ip_c" {
-  vpc                       = true
-  network_interface         = aws_network_interface.interface_c_public.id
-  associate_with_private_ip = "10.0.12.10"
+# resource "aws_eip" "ip_c" {
+#   vpc                       = true
+#   network_interface         = aws_network_interface.interface_c_public.id
+#   associate_with_private_ip = "10.0.12.10"
 
-  lifecycle {
-    prevent_destroy = true
-    ignore_changes  = [network_interface]
-  }
-}
-
-resource "aws_eip" "bastion" {
-  vpc               = true
-  network_interface = aws_network_interface.interface_c_public.id
-
-  lifecycle {
-    prevent_destroy = true
-    ignore_changes  = [network_interface]
-  }
-}
+#   lifecycle {
+#     prevent_destroy = true
+#     ignore_changes  = [network_interface]
+#   }
+# }
