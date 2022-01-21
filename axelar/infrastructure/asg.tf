@@ -213,3 +213,32 @@ resource "aws_instance" "moonbeam" {
     Environment = terraform.workspace
   }
 }
+
+resource "aws_instance" "fantom" {
+  ami           = "ami-011899242bb902164"
+  instance_type = "m5.xlarge"
+
+  ebs_optimized = true
+  root_block_device {
+    delete_on_termination = false
+
+    volume_type = "gp3"
+    volume_size = 500
+  }
+
+  key_name = aws_key_pair.ssh.id
+  private_ip = "10.0.0.30"
+
+  subnet_id = aws_subnet.main_a_private.id
+  vpc_security_group_ids = [
+    aws_security_group.allow_internal_ssh.id,
+    aws_security_group.allow_outbound_internet_access.id,
+    aws_security_group.allow_internal_fantom.id,
+    aws_security_group.allow_strict_external_fantom.id,
+  ]
+
+  tags = {
+    Name        = "fantom"
+    Environment = terraform.workspace
+  }
+}

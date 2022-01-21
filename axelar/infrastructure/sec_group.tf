@@ -204,6 +204,22 @@ resource "aws_security_group" "allow_outbound_internet_access" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
+  egress {
+    from_port        = 123
+    to_port          = 123
+    protocol         = "udp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port        = 123
+    to_port          = 123
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
   tags = {
     Name = "allow_outbound_internet_access"
   }
@@ -379,5 +395,81 @@ resource "aws_security_group" "allow_strict_external_moonbeam" {
 
   tags = {
     Name = "allow_strict_external_moonbeam"
+  }
+}
+
+resource "aws_security_group" "allow_internal_fantom" {
+  name        = "allow_internal_fantom"
+  description = "Allow all fantom ports on self"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port = 5050
+    to_port   = 5050
+    protocol  = "tcp"
+    security_groups  = [aws_security_group.allow_strict_external_cosmos.id]
+  }
+
+  ingress {
+    from_port = 5050
+    to_port   = 5050
+    protocol  = "udp"
+    security_groups  = [aws_security_group.allow_strict_external_cosmos.id]
+  }
+
+  ingress {
+    from_port = 18545
+    to_port   = 18546
+    protocol  = "tcp"
+    security_groups  = [aws_security_group.allow_strict_external_cosmos.id]
+  }
+
+  tags = {
+    Name = "allow_internal_fantom"
+  }
+}
+
+resource "aws_security_group" "allow_strict_external_fantom" {
+  name        = "allow_external_fantom"
+  description = "Allow all Fantom ports to everyone"
+  vpc_id      = aws_vpc.main.id
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  egress {
+    from_port   = 5050
+    to_port     = 5050
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 5050
+    to_port     = 5050
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 18545
+    to_port     = 18546
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 30300
+    to_port     = 30340
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_strict_external_fantom"
   }
 }
