@@ -213,12 +213,3 @@ resource "aws_instance" "moonbeam" {
     Environment = terraform.workspace
   }
 }
-
-# resource "aws_eip" "avalanche" {
-#   vpc               = true
-# }
-
-# resource "aws_eip_association" "eip_assoc_avalanche" {
-#   instance_id   = aws_instance.avalanche.id
-#   allocation_id = aws_eip.avalanche.id
-# }
