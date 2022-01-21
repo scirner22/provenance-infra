@@ -166,8 +166,22 @@ resource "aws_security_group" "allow_strict_external_cosmos" {
     to_port          = 9651
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
   }
+
+  egress {
+    from_port        = 18545
+    to_port          = 18545
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port        = 9933
+    to_port          = 9933
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
 
 
   tags = {
@@ -316,6 +330,14 @@ resource "aws_security_group" "allow_strict_external_avalanche" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
   tags = {
     Name = "allow_strict_external_avalanche"
   }
@@ -364,6 +386,14 @@ resource "aws_security_group" "allow_strict_external_moonbeam" {
   name        = "allow_external_moonbeam"
   description = "Allow all Moonbeam ports to everyone"
   vpc_id      = aws_vpc.main.id
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
 
   egress {
     from_port   = 9615
