@@ -281,6 +281,8 @@ Commands to register external chains
 /home/axelard/.axelar_testnet/bin/axelard tx nexus register-chain-maintainer fantom --from broadcaster --node http://localhost:26657 --home /home/axelard/.axelar_testnet/.vald/ --chain-id axelar-testnet-lisbon-2
 
 /home/axelard/.axelar_testnet/bin/axelard tx nexus register-chain-maintainer moonbeam --from broadcaster --node http://localhost:26657 --home /home/axelard/.axelar_testnet/.vald/ --chain-id axelar-testnet-lisbon-2
+
+/home/axelard/.axelar_testnet/bin/axelard tx nexus register-chain-maintainer avalanche --from broadcaster --node http://localhost:26657 --home /home/axelard/.axelar_testnet/.vald/ --chain-id axelar-testnet-lisbon-2
 ```
 
 
