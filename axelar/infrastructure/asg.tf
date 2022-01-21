@@ -204,6 +204,8 @@ resource "aws_instance" "moonbeam" {
   vpc_security_group_ids = [
     aws_security_group.allow_internal_ssh.id,
     aws_security_group.allow_outbound_internet_access.id,
+    aws_security_group.allow_internal_moonbeam.id,
+    aws_security_group.allow_strict_external_moonbeam.id
   ]
 
   tags = {
