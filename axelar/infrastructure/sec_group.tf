@@ -304,3 +304,80 @@ resource "aws_security_group" "allow_strict_external_avalanche" {
     Name = "allow_strict_external_avalanche"
   }
 }
+
+resource "aws_security_group" "allow_internal_moonbeam" {
+  name        = "allow_internal_moonbeam"
+  description = "Allow all moonbeam ports on self"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port = 9615
+    to_port   = 9616
+    protocol  = "tcp"
+    security_groups  = [aws_security_group.allow_strict_external_cosmos.id]
+  }
+
+  ingress {
+    from_port = 9944
+    to_port   = 9945
+    protocol  = "tcp"
+    security_groups  = [aws_security_group.allow_strict_external_cosmos.id]
+  }
+
+  ingress {
+    from_port = 9933
+    to_port   = 9934
+    protocol  = "tcp"
+    security_groups  = [aws_security_group.allow_strict_external_cosmos.id]
+  }
+
+  ingress {
+    from_port = 30333
+    to_port   = 30334
+    protocol  = "tcp"
+    security_groups  = [aws_security_group.allow_strict_external_cosmos.id]
+  }
+
+
+  tags = {
+    Name = "allow_internal_moonbeam"
+  }
+}
+
+resource "aws_security_group" "allow_strict_external_moonbeam" {
+  name        = "allow_external_moonbeam"
+  description = "Allow all Moonbeam ports to everyone"
+  vpc_id      = aws_vpc.main.id
+
+  egress {
+    from_port   = 9615
+    to_port     = 9616
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 9944
+    to_port     = 9945
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 9933
+    to_port     = 9934
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 30333
+    to_port     = 30334
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_strict_external_moonbeam"
+  }
+}
