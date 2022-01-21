@@ -189,13 +189,46 @@ If you need to edit the validator you can use commands similar to the following
 
 Registering Chains
 
-`/axelar/bin/axelard tx nexus register-chain-maintainer ethereum --from broadcaster --node http://localhost:26657 --home /axelar/.vald/ --chain-id axelar-dojo-1`
+First you need to edit the config.toml file under /home/ubuntu/git/validators/configuration
 
-`/axelar/bin/axelard tx nexus register-chain-maintainer moonbeam --from broadcaster --node http://localhost:26657 --home /axelar/.vald/ --chain-id axelar-dojo-1`
+```
+[[axelar_bridge_evm]]
+name = "Ethereum"
+rpc_addr = "http://10.0.11.8:8545"
+start-with-bridge = true
 
+[[axelar_bridge_evm]]
+name = "Avalanche"
+rpc_addr = ""
+start-with-bridge = false
+
+[[axelar_bridge_evm]]
+name = "Fantom"
+rpc_addr = ""
+start-with-bridge = false
+
+[[axelar_bridge_evm]]
+name = "Moonbeam"
+rpc_addr = "http://10.0.1.30:9933"
+start-with-bridge = true
+
+```
+
+
+```
+/axelar/bin/axelard tx nexus register-chain-maintainer ethereum --from broadcaster --node http://localhost:26657 --home /axelar/.vald/ --chain-id axelar-dojo-1
+
+/axelar/bin/axelard tx nexus register-chain-maintainer moonbeam --from broadcaster --node http://localhost:26657 --home /axelar/.vald/ --chain-id axelar-dojo-1
+
+```
 
 ### Commands Used to create Testnet Validator and Register Chains
-`/axelar/bin/axelard tx snapshot --home /axelar/.core register-proxy axelar1ayuaepfnrr7dtva835aymk0xnktr3d6ym7fr9z --from validator --chain-id axelar-dojo-1`
+
+Register the broadcaster address
+
+```
+/axelar/bin/axelard tx snapshot --home /axelar/.core register-proxy axelar1ayuaepfnrr7dtva835aymk0xnktr3d6ym7fr9z --from validator --chain-id axelar-dojo-1
+```
 
 
 ```
@@ -216,13 +249,39 @@ Registering Chains
 ```
 
 ###Registering External Chains
+First you need to edit the config.toml file under /home/ubuntu/git/axelarate-community/configuration
 
-`/home/axelard/.axelar_testnet/bin/axelard tx nexus register-chain-maintainer ethereum --from broadcaster --node http://localhost:26657 --home /home/axelard/.axelar_testnet/.vald/ --chain-id axelar-testnet-lisbon-2`
+```
+[[axelar_bridge_evm]]
+name = "Ethereum"
+rpc_addr = "http://10.0.11.31:8545"
+start-with-bridge = true
 
-`/home/axelard/.axelar_testnet/bin/axelard tx nexus register-chain-maintainer fantom --from broadcaster --node http://localhost:26657 --home /home/axelard/.axelar_testnet/.vald/ --chain-id axelar-testnet-lisbon-2`
+[[axelar_bridge_evm]]
+name = "Avalanche"
+rpc_addr = ""
+start-with-bridge = false
 
-`/home/axelard/.axelar_testnet/bin/axelard tx nexus register-chain-maintainer moonbeam --from broadcaster --node http://localhost:26657 --home /home/axelard/.axelar_testnet/.vald/ --chain-id axelar-testnet-lisbon-2`
+[[axelar_bridge_evm]]
+name = "Fantom"
+rpc_addr = "http://10.0.0.30:18545"
+start-with-bridge = true
 
+[[axelar_bridge_evm]]
+name = "Moonbeam"
+rpc_addr = "http://10.0.1.30:9933"
+start-with-bridge = true
+
+```
+Commands to register external chains
+
+```
+/home/axelard/.axelar_testnet/bin/axelard tx nexus register-chain-maintainer ethereum --from broadcaster --node http://localhost:26657 --home /home/axelard/.axelar_testnet/.vald/ --chain-id axelar-testnet-lisbon-2
+
+/home/axelard/.axelar_testnet/bin/axelard tx nexus register-chain-maintainer fantom --from broadcaster --node http://localhost:26657 --home /home/axelard/.axelar_testnet/.vald/ --chain-id axelar-testnet-lisbon-2
+
+/home/axelard/.axelar_testnet/bin/axelard tx nexus register-chain-maintainer moonbeam --from broadcaster --node http://localhost:26657 --home /home/axelard/.axelar_testnet/.vald/ --chain-id axelar-testnet-lisbon-2
+```
 
 
 ### Managing Fantom Nodes
