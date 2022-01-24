@@ -139,6 +139,7 @@ axelar1w2pkh5p8a7kznxz97tpdmur48hagavmgjqr8xh
 validator publickey
 pubkey: '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"eK5GZc45bJCT+ksy8vuHcnxNQOATsiewyc/ZfmEELq0="}'
 
+Validator Consensus Address
 axelarvalcons13xtsg62auggv08pyh6u89x77su6qnw2y2l5346
 
 ###TESTNET INFO#######
@@ -284,15 +285,59 @@ Commands to register external chains
 
 /home/axelard/.axelar_testnet/bin/axelard tx nexus register-chain-maintainer avalanche --from broadcaster --node http://localhost:26657 --home /home/axelard/.axelar_testnet/.vald/ --chain-id axelar-testnet-lisbon-2
 ```
+### Delegating AXL
 
+
+Testnet
+`.axelar_testnet/bin/axelard tx staking delegate "$(/home/axelard/.axelar_testnet/bin/axelard keys show validator -a --bech val --home /home/axelard/.axelar_testnet/.core)" 10000000uaxl --from validator --home /home/axelard/.axelar_testnet/.core --chain-id axelar-testnet-lisbon-2`
+
+
+Mainnet
+`/axelar/bin/axelard tx staking delegate axelarvaloper1w2pkh5p8a7kznxz97tpdmur48hagavmgjp4z5c 4000000uaxl --from validator --home /axelar/.core --chain-id axelar-dojo-1`
+
+axelarvaloper1w2pkh5p8a7kznxz97tpdmur48hagavmgjp4z5c
 
 ### Managing Fantom Nodes
 
+systemd service
+```
+[Unit]
+Description=Fantom systemd service
+StartLimitIntervalSec=0
 
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu
+ExecStart=/home/ubuntu/git/go-opera/build/opera --genesis /home/ubuntu/fantom/mainnet.g --http --http.addr=0.0.0.0 --http.vhosts="*" --http.corsdomain="*" --ws --ws.origins="*" --datadir "/home/ubuntu/fantom/data/.opera" --nat extip:35.175.45.167
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target
+
+```
 ### Managing Avalanche Nodes
+Avalanche is leveraging the systemd service avalanchego
+
+Home Directory
+
+`/home/ubuntu/.avalanchego`
+
+Systemd service is `avalanchego`
 
 
 ### Managing Moonbeam Nodes
+Moonbeam is leveraging the systemd service moonbeam
+
+Home Directory
+testnet
+`/var/lib/alphanet-data`
+
+mainnet
+`/var/lib/moonbase-data`
+
+Systemd service is `moonbase`
 
 
 ### Managing Ethereum Nodes

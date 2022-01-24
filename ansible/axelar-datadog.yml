@@ -1,0 +1,52 @@
+- hosts: validator-axelar-mainnet
+  become: yes
+  become_method: sudo
+  roles:
+    - { role: Datadog.datadog, become: yes }
+  vars_files:
+    - /Volumes/Keybase/team/figureops/ansible/datadog_vars
+  vars:
+    datadog_agent_major_version: "7"
+    datadog_additional_groups:
+      - systemd-journal
+    datadog_config:
+      logs_enabled: true
+      tags:
+        - "env:{{ env }}"
+        - "chain_id:{{ chain_id }}"
+        - "component:blockchain"
+        - "nodename: {{ inventory_hostname }}"
+    datadog_checks:
+      disk:
+        init_config:
+        instances:
+          - mount_point_exclude:
+            - /sys/kernel/debug/tracing
+      openmetrics:
+        init_config:
+        instances:
+          - prometheus_url: http://127.0.0.1:26660/metrics
+            namespace: axelar
+            metrics:
+              - tendermint_consensus_block_interval_seconds
+              - tendermint_consensus_block_size_bytes
+              - tendermint_consensus_byzantine_validators
+              - tendermint_consensus_byzantine_validators_power
+              - tendermint_consensus_height
+              - tendermint_consensus_latest_block_height
+              - tendermint_consensus_missing_validators
+              - tendermint_consensus_missing_validators_power
+              - tendermint_consensus_validators
+              - tendermint_consensus_validators_power
+              - tendermint_consensus_validator_power
+              - tendermint_consensus_validator_last_signed_height
+      # systemd:
+      #   init_config:
+      #   instances:
+      #     - unit_names:
+      #        - avalanchego.service
+      # journald:
+      #   logs:
+      #     - type: journald
+      #       include_units:
+      #         - avalanchego.service

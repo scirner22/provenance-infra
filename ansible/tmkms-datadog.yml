@@ -1,0 +1,32 @@
+- hosts: tmkms
+  become: yes
+  become_method: sudo
+  roles:
+    - { role: Datadog.datadog, become: yes }
+  vars:
+    datadog_agent_major_version: "7"
+    datadog_additional_groups:
+      - systemd-journal
+    datadog_config:
+      logs_enabled: true
+      tags:
+        - "env:{{ env }}"
+        - "chain_id:{{ chain_id }}"
+        - "component:blockchain"
+        - "nodename: {{ inventory_hostname }}"
+    datadog_checks:
+      disk:
+        init_config:
+        instances:
+          - mount_point_exclude:
+            - /sys/kernel/debug/tracing
+      systemd:
+        init_config:
+        instances:
+          - unit_names:
+             - tmkms.service
+      journald:
+        logs:
+          - type: journald
+            include_units:
+              - tmkms.service
