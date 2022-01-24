@@ -1,77 +1,77 @@
-[avalanche-testnet]
+[avalanche_testnet]
 avalanche-axelar-testnet ansible_host=10.0.10.30 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/axelar-testnet.pem
-[avalanche-testnet:vars]
+[avalanche_testnet:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion-axelar-testnet"'
 chain_id='fuji'
 env='axelar-testnet'
 
-[avalanche-mainnet]
+[avalanche_mainnet]
 avalanche-axelar-mainnet ansible_host=10.0.10.30 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/axelar-mainnet.pem
-[avalanche-mainnet:vars]
+[avalanche_mainnet:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion-axelar-mainnet"'
 chain_id='mainnet'
 env='axelar-mainnet'
 
-[moonbeam-testnet]
+[moonbeam_testnet]
 moonbeam-axelar-testnet ansible_host=10.0.1.30 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/axelar-testnet.pem
-[moonbeam-testnet:vars]
+[moonbeam_testnet:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion-axelar-testnet"'
 chain_id='moonbase-alphanet'
 env='axelar-mainnet'
 
-[moonbeam-mainnet]
+[moonbeam_mainnet]
 moonbeam-axelar-mainnet ansible_host=10.0.1.30 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/axelar-mainnet.pem
-[moonbeam-mainnet:vars]
+[moonbeam_mainnet:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion-axelar-mainnet"'
 chain_id='moonbeam'
 env='axelar-mainnet'
 
 
-[fantom-testnet]
+[fantom_testnet]
 fantom-axelar-testnet ansible_host=10.0.0.30 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/axelar-testnet.pem
-[fantom-testnet:vars]
+[fantom_testnet:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion-axelar-testnet"'
 chain_id='fantom-testnet'
 env='axelar-testnet'
 
-[fantom-mainnet]
+[fantom_mainnet]
 fantom-axelar-mainnet ansible_host=10.0.0.30 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/axelar-mainnet.pem
-[fantom-mainnet:vars]
+[fantom_mainnet:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion-axelar-mainnet"'
 chain_id='fantom-mainnet'
 env='axelar-mainnet'
 
-[ethereum-testnet]
+[ethereum_testnet]
 ethereum-axelar-testnet ansible_host=10.0.11.31 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/axelar-testnet.pem
-[ethereum-testnet:vars]
+[ethereum_testnet:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion-axelar-testnet"'
 chain_id='ropsten'
 env='axelar-testnet'
 
-[ethereum-mainnet]
+[ethereum_mainnet]
 ethereum-axelar-mainnet ansible_host=10.0.11.8 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/axelar-mainnet.pem
-[ethereum-mainnet:vars]
+[ethereum_mainnet:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion-axelar-mainnet"'
 chain_id='ethereum-mainnet'
 env='axelar-mainnet'
 
-[validator-axelar-testnet]
+[axelar_testnet]
 validator-axelar-testnet ansible_host=10.0.11.185 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/axelar-testnet.pem
-[validator-axelar-testnet:vars]
+[axelar_testnet:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion-axelar-testnet"'
 chain_id='axelar-testnet-lisbon-2'
 env='axelar-testnet'
 
-[validator-axelar-mainnet]
+[axelar_mainnet]
 validator-axelar-mainnet ansible_host=10.0.11.203 ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/axelar-mainnet.pem
-[validator-axelar-mainnet:vars]
+[axelar_mainnet:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion-axelar-mainnet"'
 chain_id='axelar-dojo-1'
 env='axelar-mainnet'
 
-[tmkms-axelar-mainnet]
+[tmkms]
 tmkms-axelar-mainnet ansible_host=10.0.0.173 ansible_user=ec2-user ansible_ssh_private_key_file=~/.ssh/axelar-mainnet.pem
-[validator-axelar-mainnet:vars]
+[tmkms:vars]
 ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ProxyCommand="ssh -W %h:%p -q bastion-axelar-mainnet"'
 chain_id='axelar-dojo-1'
 env='axelar-mainnet'
