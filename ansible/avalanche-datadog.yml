@@ -1,4 +1,4 @@
-- hosts: avalanche-testnet,avalanche-mainnet
+- hosts: avalanche_testnet,avalanche_mainnet
   become: yes
   become_method: sudo
   roles:

@@ -1,4 +1,4 @@
-- hosts: validator-axelar-mainnet
+- hosts: validator_axelar_mainnet
   become: yes
   become_method: sudo
   roles:

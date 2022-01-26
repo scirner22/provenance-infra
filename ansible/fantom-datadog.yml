@@ -1,4 +1,4 @@
-- hosts: fantom-testnet,fantom-mainnet
+- hosts: fantom_testnet,fantom_mainnet
   become: yes
   become_method: sudo
   roles:

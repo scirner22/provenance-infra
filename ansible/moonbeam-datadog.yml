@@ -1,4 +1,4 @@
-- hosts: moonbeam-testnet,moonbeam-mainnet
+- hosts: moonbeam_testnet,moonbeam_mainnet
   become: yes
   become_method: sudo
   roles:

@@ -1,4 +1,4 @@
-- hosts: ethereum-testnet,ethereum-mainnet
+- hosts: ethereum_testnet,ethereum_mainnet
   become: yes
   become_method: sudo
   roles:
