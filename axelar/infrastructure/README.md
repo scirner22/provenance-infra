@@ -221,6 +221,10 @@ start-with-bridge = true
 
 /axelar/bin/axelard tx nexus register-chain-maintainer moonbeam --from broadcaster --node http://localhost:26657 --home /axelar/.vald/ --chain-id axelar-dojo-1
 
+/axelar/bin/axelard tx nexus register-chain-maintainer fantom --from broadcaster --node http://localhost:26657 --home /axelar/.vald/ --chain-id axelar-dojo-1
+
+/axelar/bin/axelard tx nexus register-chain-maintainer avalanche --from broadcaster --node http://localhost:26657 --home /axelar/.vald/ --chain-id axelar-dojo-1
+
 ```
 
 ### Commands Used to create Testnet Validator and Register Chains
@@ -260,8 +264,8 @@ start-with-bridge = true
 
 [[axelar_bridge_evm]]
 name = "Avalanche"
-rpc_addr = ""
-start-with-bridge = false
+rpc_addr = "http://10.0.10.30:9650/ext/bc/C/rpc"
+start-with-bridge = true
 
 [[axelar_bridge_evm]]
 name = "Fantom"
