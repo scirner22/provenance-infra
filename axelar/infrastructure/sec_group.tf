@@ -10,6 +10,7 @@ resource "aws_security_group" "allow_personal_ssh" {
     cidr_blocks = [
       "73.226.155.239/32",
       "67.182.236.69/32",
+      "35.227.23.78/32"
     ]
   }
 
