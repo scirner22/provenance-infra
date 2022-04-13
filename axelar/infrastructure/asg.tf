@@ -150,7 +150,7 @@ resource "aws_instance" "avalanche" {
     delete_on_termination = false
 
     volume_type = "gp3"
-    volume_size = 500
+    volume_size = 800
   }
 
   key_name = aws_key_pair.ssh.id
@@ -194,7 +194,7 @@ resource "aws_instance" "moonbeam" {
     delete_on_termination = false
 
     volume_type = "gp3"
-    volume_size = 500
+    volume_size = 750
   }
 
   key_name = aws_key_pair.ssh.id
@@ -223,7 +223,7 @@ resource "aws_instance" "fantom" {
     delete_on_termination = false
 
     volume_type = "gp3"
-    volume_size = 1200
+    volume_size = 2000
   }
 
   key_name = aws_key_pair.ssh.id
