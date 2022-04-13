@@ -16,7 +16,7 @@
         - "env:{{ env }}"
         - "chain_id:{{ chain_id }}"
         - "component:blockchain"
-        - "nodename: {{ inventory_hostname }}"
+        - "nodename:{{ inventory_hostname }}"
     datadog_checks:
       disk:
         init_config:
